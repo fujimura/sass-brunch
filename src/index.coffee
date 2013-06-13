@@ -11,6 +11,7 @@ module.exports = class SassCompiler
 
   constructor: (@config) ->
     @_bin = @config['_bin'] if @config['_bin']
+    console.log @_bin
     exec "#{@_bin} --version", (error, stdout, stderr) =>
       if error
         console.error "You need to have Sass on your system"
