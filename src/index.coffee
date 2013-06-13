@@ -10,6 +10,7 @@ module.exports = class SassCompiler
   _bin: if process.platform is 'win32' then 'sass.bat' else 'sass'
 
   constructor: (@config) ->
+    @_bin = @config['_bin'] if @config['_bin']
     exec "#{@_bin} --version", (error, stdout, stderr) =>
       if error
         console.error "You need to have Sass on your system"
