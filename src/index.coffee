@@ -10,7 +10,11 @@ module.exports = class SassCompiler
   _bin: if process.platform is 'win32' then 'sass.bat' else 'sass'
 
   constructor: (@config) ->
-    @_bin = @config.plugins?.sass?._bin if @config.plugins?.sass?._bin
+    @gem_home = @config.plugins?.sass?.gem_home
+
+    if @gem_home
+      @_bin = @config.plugins.sass.gem_home + '/bin/sass'
+
     exec "#{@_bin} --version", (error, stdout, stderr) =>
       if error
         console.error "You need to have Sass on your system"
@@ -36,7 +40,11 @@ module.exports = class SassCompiler
     options.push '--scss' if /\.scss$/.test path
     execute = =>
       options.push '--compass' if @compass
-      sass = spawn @_bin, options
+      spawn_options = if @gem_home
+        {GEM_HOME: config.plugins.sass.gem_home}
+      else
+        {}
+      sass = spawn @_bin, options, spawn_options
       sass.stdout.on 'data', (buffer) ->
         result += buffer.toString()
       sass.stderr.on 'data', (buffer) ->
