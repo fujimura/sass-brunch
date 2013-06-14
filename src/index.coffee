@@ -12,10 +12,10 @@ module.exports = class SassCompiler
   constructor: (@config) ->
     @gem_home = @config.plugins?.sass?.gem_home
 
-    @env = if @gem_home
-      {GEM_HOME: config.plugins.sass.gem_home}
-    else
-      {}
+    @env = ([k, v] for k, v of process.env).reduce (a={}, [k,v]) -> a[k] = v; a
+
+    if @gem_home
+      @env[GEM_HOME] = config.plugins.sass.gem_home
 
     if @gem_home
       @_bin = @config.plugins.sass.gem_home + '/bin/sass'
