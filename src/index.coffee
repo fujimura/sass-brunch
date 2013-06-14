@@ -20,11 +20,11 @@ module.exports = class SassCompiler
     if @gem_home
       @_bin = @config.plugins.sass.gem_home + '/bin/sass'
 
-    exec "#{@_bin} --version", @env, (error, stdout, stderr) =>
+    exec "#{@_bin} --version", {env: @env}, (error, stdout, stderr) =>
       if error
         console.error "You need to have Sass on your system"
         console.error "Execute `gem install sass`"
-    exec 'compass --version', @env, (error, stdout, stderr) =>
+    exec 'compass --version', {env: @env}, (error, stdout, stderr) =>
       @compass = not error
 
   compile: (data, path, callback) ->
@@ -45,7 +45,7 @@ module.exports = class SassCompiler
     options.push '--scss' if /\.scss$/.test path
     execute = =>
       options.push '--compass' if @compass
-      sass = spawn @_bin, options, @env
+      sass = spawn @_bin, options, {env: @env}
       sass.stdout.on 'data', (buffer) ->
         result += buffer.toString()
       sass.stderr.on 'data', (buffer) ->
