@@ -8,6 +8,7 @@ module.exports = class SassCompiler
   pattern: /\.s[ac]ss$/
   _dependencyRegExp: /^ *@import ['"](.*)['"]/
   _bin: if process.platform is 'win32' then 'sass.bat' else 'sass'
+  _compass_bin: 'compass'
 
   constructor: (@config) ->
     @gem_home = @config.plugins?.sass?.gem_home
@@ -17,6 +18,7 @@ module.exports = class SassCompiler
     if @gem_home
       @env['GEM_HOME'] = config.plugins.sass.gem_home
       @_bin            = @config.plugins.sass.gem_home + '/bin/sass'
+      @_compass_bin    = @config.plugins.sass.gem_home + '/bin/compass'
 
     exec "#{@_bin} --version", {env: @env}, (error, stdout, stderr) =>
       if error
