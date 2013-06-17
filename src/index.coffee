@@ -24,7 +24,7 @@ module.exports = class SassCompiler
       if error
         console.error "You need to have Sass on your system"
         console.error "Execute `gem install sass`"
-    exec "#{@compass_bin} --version", {env: @env}, (error, stdout, stderr) =>
+    exec "#{@_compass_bin} --version", {env: @env}, (error, stdout, stderr) =>
       @compass = not error
 
   compile: (data, path, callback) ->
