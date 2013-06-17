@@ -16,9 +16,7 @@ module.exports = class SassCompiler
 
     if @gem_home
       @env['GEM_HOME'] = config.plugins.sass.gem_home
-
-    if @gem_home
-      @_bin = @config.plugins.sass.gem_home + '/bin/sass'
+      @_bin            = @config.plugins.sass.gem_home + '/bin/sass'
 
     exec "#{@_bin} --version", {env: @env}, (error, stdout, stderr) =>
       if error
